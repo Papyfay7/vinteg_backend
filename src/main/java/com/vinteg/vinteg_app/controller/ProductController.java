@@ -1,0 +1,49 @@
+package com.vinteg.vinteg_app.controller;
+import com.vinteg.vinteg_app.model.Product;
+import com.vinteg.vinteg_app.repositories.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/products")
+public class ProductController {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    // Endpoint to create a new product
+    @PostMapping
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        try {
+            Product _product = productRepository.save(new Product(
+                    product.getTitle(),
+                    product.getDescription(),
+                    product.getCategory(),
+                    product.getBrand(),
+                    product.getCondition(),
+                    product.getPrice()
+            ));
+            return new ResponseEntity<>(_product, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Endpoint to retrieve all products
+    @GetMapping
+    public ResponseEntity<List<Product>> getAllProducts() {
+        try {
+            List<Product> products = productRepository.findAll();
+            if (products.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(products, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
