@@ -13,6 +13,7 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private String phone;
 
     // Getters and setters
     public Long getId() {
@@ -47,7 +48,15 @@ public class User {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public boolean isPresent() {
-        return id != null && username != null && password != null && email != null;
+        return id != null && username != null && password != null && email != null && phone !=null;
     }
 }

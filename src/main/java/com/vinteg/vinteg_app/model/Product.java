@@ -1,49 +1,26 @@
 package com.vinteg.vinteg_app.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "products")
-public class Product {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false, length = 255)
     private String title;
-
-    @Column(columnDefinition = "TEXT")
     private String description;
-
-    @Column(length = 100)
     private String category;
-
-    @Column(length = 100)
     private String brand;
-
-    @Column(name = "`condition`")
     private String condition;
+    private Double price;
+    @Lob
+    private byte[] image;
 
-    @Column(nullable = false)
-    private double price;
-
-    // Constructeurs, getters et setters
-    // ...
-
-    public Product() {
-        // Constructeur par défaut requis par JPA
-    }
-
-    public Product(String title, String description, String category, String brand, String condition, double price) {
-        this.title = title;
-        this.description = description;
-        this.category = category;
-        this.brand = brand;
-        this.condition = condition;
-        this.price = price;
-    }
-
-    // Getters et setters
     public Long getId() {
         return id;
     }
@@ -92,11 +69,19 @@ public class Product {
         this.condition = condition;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

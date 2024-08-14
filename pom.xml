@@ -15,7 +15,6 @@
     <description>Vinteg_app</description>
     <properties>
         <java.version>17</java.version>
-        <spring-boot.version>3.0.0</spring-boot.version>
     </properties>
     <dependencies>
         <!-- Spring Boot Starters -->
@@ -28,9 +27,16 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
 
         <!-- Spring Security Crypto -->
         <dependency>
@@ -58,6 +64,11 @@
             <artifactId>commons-configuration2</artifactId>
             <version>2.10.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>9.0.0</version>
+        </dependency>
 
         <!-- Spring Boot Starter Test -->
         <dependency>
@@ -73,11 +84,10 @@
             <version>2.5.0</version>
         </dependency>
 
-        <!-- Jakarta Servlet API -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>6.0.0</version>
+            <version>6.1.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -93,11 +103,6 @@
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>8.0.1.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>5.3.30</version>
         </dependency>
 
     </dependencies>

@@ -1,49 +1,41 @@
 package com.vinteg.vinteg_app.controller;
+
 import com.vinteg.vinteg_app.model.Product;
 import com.vinteg.vinteg_app.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/products")
 public class ProductController {
-
     @Autowired
     private ProductRepository productRepository;
 
-    // Endpoint to create a new product
-    @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        try {
-            Product _product = productRepository.save(new Product(
-                    product.getTitle(),
-                    product.getDescription(),
-                    product.getCategory(),
-                    product.getBrand(),
-                    product.getCondition(),
-                    product.getPrice()
-            ));
-            return new ResponseEntity<>(_product, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    @PostMapping(value = "/api/products", consumes = "multipart/form-data")
+    public ResponseEntity<Product> createProduct(@RequestParam("title") String title,
+                                                 @RequestParam("description") String description,
+                                                 @RequestParam("category") String category,
+                                                 @RequestParam("brand") String brand,
+                                                 @RequestParam("condition") String condition,
+                                                 @RequestParam("price") Double price,
+                                                 @RequestParam("image") MultipartFile image) throws IOException {
+        Product product = new Product();
+        product.setTitle(title);
+        product.setDescription(description);
+        product.setCategory(category);
+        product.setBrand(brand);
+        product.setCondition(condition);
+        product.setPrice(price);
+        product.setImage(image.getBytes());
 
-    // Endpoint to retrieve all products
-    @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        try {
-            List<Product> products = productRepository.findAll();
-            if (products.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(products, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Product savedProduct = productRepository.save(product);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
 }
